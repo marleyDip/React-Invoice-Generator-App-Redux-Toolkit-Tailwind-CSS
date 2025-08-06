@@ -2,16 +2,24 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   invoices: [],
-  filter: "all",
   isFormOpen: false,
+  filter: "all",
   selectedInvoice: null,
 };
 
 const invoiceSlice = createSlice({
   name: "invoices",
   initialState,
-  reducers: {},
+  reducers: {
+    toggleForm: (state) => {
+      state.isFormOpen = !state.isFormOpen;
+
+      if (!state.isFormOpen) {
+        state.selectedInvoice = null;
+      }
+    },
+  },
 });
 
-//const {} = invoiceSlice.actions;
+export const { toggleForm } = invoiceSlice.actions;
 export default invoiceSlice.reducer;

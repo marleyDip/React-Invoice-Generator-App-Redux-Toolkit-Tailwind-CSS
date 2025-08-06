@@ -1,13 +1,22 @@
 import { Plus, Trash2, X } from "lucide-react";
 
+import { useDispatch } from "react-redux";
+import { toggleForm } from "../store/invoiceSlice";
+
 function InvoiceForm() {
+  const dispatch = useDispatch();
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-start  justify-center overflow-y-auto">
       <div className="bg-slate-800 p-8 rounded-lg w-full max-w-2xl mt-8 mb-8">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold">New Invoice</h2>
 
-          <button>
+          <button
+            type="button"
+            className="p-1 hover:text-black  hover:bg-gray-50 rounded-full cursor-pointer transform hover:rotate-[360deg]  transition-all  duration-200"
+            onClick={() => dispatch(toggleForm())}
+          >
             <X size={24} />
           </button>
         </div>
