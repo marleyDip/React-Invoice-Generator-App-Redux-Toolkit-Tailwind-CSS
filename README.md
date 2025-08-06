@@ -1,7 +1,7 @@
 # 🧾 Invoice Generator App - React & Tailwind CSS
 
 
-## A modern invoice generator built with React, Tailwind CSS, and Redux Toolkit.
+## A modern invoice generator built with React, Tailwind CSS, HeadlessUI, and Redux Toolkit.
 
 
 ### ✨ Features
