@@ -1,5 +1,7 @@
+import AppContent from "./components/AppContent";
+
 function App() {
-  return <div>App</div>;
+  return <AppContent />;
 }
 
 export default App;
