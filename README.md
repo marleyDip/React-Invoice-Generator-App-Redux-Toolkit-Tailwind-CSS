@@ -8,13 +8,13 @@
 
 - ➕ **Add**, ✏️ **Edit**, 🗑️ **Delete** invoices
 
-- 🔍 **Filter** and search through invoices
+- 🔍 **Filter** and **search** through invoices
 
 - 🧾 Generate professional **PDF** invoices
 
-- ⚡ **State management** with Redux Toolkit
+- ⚡ **State management** with **Redux Toolkit**
 
-- 🎨 **Responsive UI** with Tailwind CSS
+- 🎨 **Responsive UI** with **Tailwind CSS** & **HeadlessUI** 
 
 
 ### Project Overview
