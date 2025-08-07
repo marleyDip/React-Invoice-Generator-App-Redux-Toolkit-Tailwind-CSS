@@ -1,8 +1,9 @@
 import { Plus, Trash2, X } from "lucide-react";
 
 import { useDispatch } from "react-redux";
-import { toggleForm } from "../store/invoiceSlice";
+import { addInvoices, toggleForm } from "../store/invoiceSlice";
 import { useState } from "react";
+
 import { addDays, format } from "date-fns";
 
 function InvoiceForm() {
@@ -13,6 +14,7 @@ function InvoiceForm() {
       id: `INV${Math.floor(Math.random() * 10000)
         .toString()
         .padStart(4, "0")}`,
+
       status: "pending",
 
       billForm: { streetAddress: "", city: "", postCode: "", country: "" },
@@ -37,7 +39,16 @@ function InvoiceForm() {
     };
   });
 
-  console.log(formData);
+  //console.log(formData);
+
+  //handle form submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //console.log("working");
+
+    dispatch(addInvoices(formData));
+    console.log(formData);
+  };
 
   const addItem = () => {
     setFormData({
@@ -81,7 +92,7 @@ function InvoiceForm() {
           </button>
         </div>
 
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           {/* bill from */}
           <div className="space-y-4">
             <h3 className="text-violet-500 font-bold">Bill Form</h3>
@@ -390,7 +401,7 @@ function InvoiceForm() {
             </button>
 
             <button
-              type="button"
+              type="submit"
               className="rounded-full px-6 py-3 text-white bg-gradient-to-br from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 transform hover:translate-x-2 transition-all duration-200"
             >
               Create Invoice
