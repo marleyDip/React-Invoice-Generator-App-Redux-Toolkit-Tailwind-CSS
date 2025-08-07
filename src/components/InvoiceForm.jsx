@@ -37,6 +37,35 @@ function InvoiceForm() {
     };
   });
 
+  console.log(formData);
+
+  const addItem = () => {
+    setFormData({
+      ...formData,
+      items: [...formData.items, { name: "", quantity: 0, price: 0, total: 0 }],
+    });
+  };
+
+  const updateItem = (index, field, value) => {
+    const newItems = [...formData.items];
+    newItems[index][field] = value;
+
+    if (field === "quantity" || field === "price") {
+      const qty = field === "quantity" ? value : newItems[index].quantity;
+      const price = field === "price" ? value : newItems[index].price;
+
+      newItems[index].total = qty * price;
+    }
+    setFormData({ ...formData, items: newItems });
+  };
+
+  const removeItem = (index) => {
+    setFormData({
+      ...formData,
+      items: formData.items.filter((_, i) => i !== index),
+    });
+  };
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-start  justify-center overflow-y-auto">
       <div className="bg-slate-800 p-8 rounded-lg w-full max-w-2xl mt-8 mb-8">
@@ -63,6 +92,15 @@ function InvoiceForm() {
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
               value={formData.billForm.streetAddress}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  billForm: {
+                    ...formData.billForm,
+                    streetAddress: e.target.value,
+                  },
+                })
+              }
             />
           </div>
 
@@ -73,6 +111,15 @@ function InvoiceForm() {
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
               value={formData.billForm.city}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  billForm: {
+                    ...formData.billForm,
+                    city: e.target.value,
+                  },
+                })
+              }
             />
 
             <input
@@ -80,6 +127,16 @@ function InvoiceForm() {
               placeholder="Post code"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
+              value={formData.billForm.postCode}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  billForm: {
+                    ...formData.billForm,
+                    postCode: e.target.value,
+                  },
+                })
+              }
             />
 
             <input
@@ -87,6 +144,16 @@ function InvoiceForm() {
               placeholder="Country"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
+              value={formData.billForm.country}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  billForm: {
+                    ...formData.billForm,
+                    country: e.target.value,
+                  },
+                })
+              }
             />
           </div>
           {/* bill from */}
@@ -100,6 +167,13 @@ function InvoiceForm() {
               placeholder="Client's Name"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
+              value={formData.clientName}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  clientName: e.target.value,
+                })
+              }
             />
 
             <input
@@ -107,6 +181,16 @@ function InvoiceForm() {
               placeholder="Client's Email"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
+              value={formData.billTo.clientEmail}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  billTo: {
+                    ...formData.billTo,
+                    clientEmail: e.target.value,
+                  },
+                })
+              }
             />
 
             <input
@@ -114,6 +198,16 @@ function InvoiceForm() {
               placeholder="Street Address"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
+              value={formData.billTo.streetAddress}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  billTo: {
+                    ...formData.billTo,
+                    streetAddress: e.target.value,
+                  },
+                })
+              }
             />
           </div>
 
@@ -123,6 +217,16 @@ function InvoiceForm() {
               placeholder="City"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
+              value={formData.billTo.city}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  billTo: {
+                    ...formData.billTo,
+                    city: e.target.value,
+                  },
+                })
+              }
             />
 
             <input
@@ -130,6 +234,16 @@ function InvoiceForm() {
               placeholder="Post code"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
+              value={formData.billTo.postCode}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  billTo: {
+                    ...formData.billTo,
+                    postCode: e.target.value,
+                  },
+                })
+              }
             />
 
             <input
@@ -137,6 +251,16 @@ function InvoiceForm() {
               placeholder="Country"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
+              value={formData.billTo.country}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  billTo: {
+                    ...formData.billTo,
+                    country: e.target.value,
+                  },
+                })
+              }
             />
           </div>
           {/* bill to */}
@@ -147,11 +271,28 @@ function InvoiceForm() {
               <input
                 type="date"
                 className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 text-white focus:ring-2 focus:ring-green-100 focus:outline-none transition"
+                value={formData.invoiceDate}
+                onChange={(e) => {
+                  const newDate = e.target.value;
+
+                  setFormData({
+                    ...formData,
+                    invoiceDate: newDate,
+                    dueDate: format(
+                      addDays(new Date(newDate), 30),
+                      "yyyy - MM - dd"
+                    ),
+                  });
+                }}
               />
 
               <select
                 className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
                 required
+                value={formData.paymentTerms}
+                onChange={(e) =>
+                  setFormData({ ...formData, paymentTerms: e.target.value })
+                }
               >
                 <option>Net 30 Days</option>
 
@@ -163,6 +304,10 @@ function InvoiceForm() {
               type="text"
               placeholder="Project Description"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
+              value={formData.projectDescription}
+              onChange={(e) =>
+                setFormData({ ...formData, projectDescription: e.target.value })
+              }
             />
           </div>
           {/* date */}
@@ -171,41 +316,64 @@ function InvoiceForm() {
           <div className="space-y-4">
             <h3>Item List</h3>
 
-            <div className="grid grid-cols-12 gap-4 items-center">
-              <input
-                type="text"
-                placeholder="Item Name"
-                className="col-span-5 rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
-              />
+            {formData.items.map((item, index) => (
+              <div className="grid grid-cols-12 gap-4 items-center" key={index}>
+                <input
+                  type="text"
+                  placeholder="Item Name"
+                  className="col-span-5 rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
+                  value={item.name}
+                  onChange={(e) => {
+                    const updateItem = [...formData.items];
+                    updateItem[index].name = e.target.value;
 
-              <input
-                type="number"
-                placeholder="Quantity"
-                className="col-span-2 rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
-                min="1"
-                required
-              />
+                    setFormData({ ...formData, items: updateItem });
+                  }}
+                />
 
-              <input
-                type="number"
-                placeholder="price"
-                className="col-span-2 rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
-                min="0"
-                step="0.01"
-                required
-              />
+                <input
+                  type="number"
+                  placeholder="Qty"
+                  className="col-span-2 rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
+                  min="1"
+                  required
+                  value={item.quantity}
+                  onChange={(e) =>
+                    updateItem(index, "quantity", parseInt(e.target.value))
+                  }
+                />
 
-              <div className="col-span-2 text-right">Total Amount</div>
+                <input
+                  type="number"
+                  placeholder="price"
+                  className="col-span-2 rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
+                  min="0"
+                  step="0.01"
+                  required
+                  value={item.price}
+                  onChange={(e) =>
+                    updateItem(index, "price", parseFloat(e.target.value))
+                  }
+                />
 
-              <button
-                type="button"
-                className="text-slate-300 hover:text-red-400 cursor-pointer"
-              >
-                <Trash2 size={20} />
-              </button>
-            </div>
+                <div className="col-span-2 text-right">
+                  ৳ {item.total.toFixed(2)}
+                </div>
 
-            <button className="flex items-center justify-center w-full space-x-2 bg-slate-700 hover:bg-slate-600 rounded-lg p-3">
+                <button
+                  type="button"
+                  className="text-slate-300 hover:text-red-400 cursor-pointer"
+                  onClick={() => removeItem(index)}
+                >
+                  <Trash2 size={20} />
+                </button>
+              </div>
+            ))}
+
+            <button
+              className="flex items-center justify-center w-full space-x-2 bg-slate-700 hover:bg-slate-600 rounded-lg p-3"
+              onClick={addItem}
+            >
               <Plus size={20} />
               <span>Add New Item</span>
             </button>

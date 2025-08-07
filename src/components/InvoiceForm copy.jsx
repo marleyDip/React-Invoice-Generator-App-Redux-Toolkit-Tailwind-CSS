@@ -15,6 +15,7 @@ function InvoiceForm() {
         clientEmail: "",
         streetAddress: "",
       },
+      items: [],
     };
   });
 
@@ -72,6 +73,43 @@ function InvoiceForm() {
 
     setFormData(oldData);
   };
+
+  // button add data
+  const addItem = () => {
+    setFormData({
+      ...formData,
+      items: [...formData.items, { name: "", quantity: 0, price: 0, total: 0 }],
+    });
+  };
+
+  //button update date
+  const updateItem = (index, field, value) => {
+    const newItem = [...formData.items];
+    newItem[index][field] = value;
+
+    newItem[index].total = newItem[index].quantity * newItem[index].price;
+    // That would work only after state has been updated - total might not update immediately
+
+    // it update "total" dynamically with middle of updating change price, quantity
+    if (field === "quantity" || field === "price") {
+      const qty = field === "quantity" ? value : newItem[index].quantity;
+      const price = field === "price" ? value : newItem[index].price;
+
+      newItem[index].total = qty * price; // "2" * "3.4" = 6.8
+    }
+
+    setFormData({ ...formData, items: newItem });
+  };
+
+  // btn remove items
+  const removeItem = (index) => {
+    setFormData({
+      ...formData,
+      items: formData.items.filter((_, i) => i !== index),
+    });
+  };
+
+  // (_, i) => If you only care about the index and don’t need the item itself, you can name the first argument _ to show that it's unused:
 
   // single object
   const [formData1, setFormData1] = useState({
@@ -179,6 +217,73 @@ function InvoiceForm() {
           />
         </div>
         {/* bill to */}
+
+        {/* item list */}
+        <div className="space-y-4">
+          <h3>Item List</h3>
+
+          {formData.items.map((item, index) => (
+            <div className="grid grid-cols-12 gap-4 items-center" key={index}>
+              <input
+                type="text"
+                placeholder="Item Name"
+                className="col-span-5 rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
+                value={item.name}
+                onChange={(e) => {
+                  const updateItem = [...formData.items];
+                  updateItem[index].name = e.target.value;
+                  setFormData({ ...formData, items: updateItem });
+                }}
+              />
+
+              <input
+                type="number"
+                placeholder="Qty"
+                className="col-span-2 rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
+                min="1"
+                required
+                value={item.quantity}
+                onChange={(e) =>
+                  updateItem(index, "name", parseInt(e.target.value))
+                }
+              />
+
+              <input
+                type="number"
+                placeholder="price"
+                className="col-span-2 rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
+                min="0"
+                step="0.01"
+                required
+                value={item.price}
+                onChange={(e) =>
+                  updateItem(index, "price", parseFloat(e.target.value))
+                }
+              />
+
+              <div className="col-span-2 text-right">
+                ৳ {item.total.toFixed(2)}
+              </div>
+
+              <button
+                type="button"
+                className="text-slate-300 hover:text-red-400 cursor-pointer"
+                onclick={() => removeItem(index)}
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
+          ))}
+
+          <button
+            className="flex items-center justify-center w-full space-x-2 bg-slate-700 hover:bg-slate-600 rounded-lg p-3"
+            onClick={addItem}
+          >
+            <Plus size={20} />
+            <span>Add New Item</span>
+          </button>
+        </div>
+        {/* item list */}
       </form>
 
       <form>
@@ -226,3 +331,38 @@ function InvoiceForm() {
 }
 
 export default InvoiceForm;
+
+/*  
+      => we know also "2" + "3" = 23 but +"2" + +"3" = 5....js work perfectly -, *, /, %, **....not only +
+      
+      if field = "price" and value = "200", this sets:
+            newItems[index].price = "200";
+
+      => qty and price come from value, which is a string from the input event — multiplying strings can cause unexpected behavior
+
+      => (like "2" * "3" works in JS but isn't safe).
+
+      => Could silently break if value is empty string "" → result: 0 or NaN. so thats why use   =>  parseFloat(...) || 0 => 	Convert string input to a safe number
+
+      const qty1 =
+          parseFloat(field === "quantity" ? value : newItem[index].price) || 0;
+
+   This ensures: "5" → 5
+                "" → NaN → fallback to 0
+                "abc" → NaN → fallback to 0 
+  */
+
+// this is for update total amount, If price or quantity changed, use value as price, Always uses the most recent inputs
+
+/*  Case 1: field === "quantity"
+          const qty = value; // because you just changed quantity
+          const price = newItems[index].price; // keep the old price
+       
+        Case 2: field === "price"
+          const qty = newItems[index].quantity; // keep the old quantity
+          const price = value; // because you just changed price 
+
+          So in both cases, you:
+          => Use the newly typed value for the changed field
+          => Use the existing value for the unchanged field
+  */
