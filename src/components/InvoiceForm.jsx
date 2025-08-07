@@ -2,9 +2,40 @@ import { Plus, Trash2, X } from "lucide-react";
 
 import { useDispatch } from "react-redux";
 import { toggleForm } from "../store/invoiceSlice";
+import { useState } from "react";
+import { addDays, format } from "date-fns";
 
 function InvoiceForm() {
   const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState(() => {
+    return {
+      id: `INV${Math.floor(Math.random() * 10000)
+        .toString()
+        .padStart(4, "0")}`,
+      status: "pending",
+
+      billForm: { streetAddress: "", city: "", postCode: "", country: "" },
+
+      billTo: {
+        clientEmail: "",
+        streetAddress: "",
+        city: "",
+        postCode: "",
+        country: "",
+      },
+
+      clientName: "",
+      paymentTerms: "Net 30 Days",
+      projectDescription: "",
+
+      items: [],
+      amount: 0,
+
+      invoiceDate: format(new Date(), "yyyy-MM-dd"),
+      dueDate: format(addDays(new Date(), 30), "yyyy-MM-dd"),
+    };
+  });
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-start  justify-center overflow-y-auto">
@@ -31,6 +62,7 @@ function InvoiceForm() {
               placeholder="Street Address"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
+              value={formData.billForm.streetAddress}
             />
           </div>
 
@@ -40,6 +72,7 @@ function InvoiceForm() {
               placeholder="City"
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 placeholder-gray-400 focus:ring-2 focus:ring-green-100 focus:outline-none transition"
               required
+              value={formData.billForm.city}
             />
 
             <input
