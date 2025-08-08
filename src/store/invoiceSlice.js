@@ -74,8 +74,14 @@ const invoiceSlice = createSlice({
         state.selectedInvoice = null;
       }
     },
+
+    setSelectedInvoice: (state, action) => {
+      state.selectedInvoice = action.payload;
+      state.isFormOpen = false;
+    },
   },
 });
 
-export const { toggleForm, addInvoices, setFilter } = invoiceSlice.actions;
+export const { toggleForm, addInvoices, setFilter, setSelectedInvoice } =
+  invoiceSlice.actions;
 export default invoiceSlice.reducer;

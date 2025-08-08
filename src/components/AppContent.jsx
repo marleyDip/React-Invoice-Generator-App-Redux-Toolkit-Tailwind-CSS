@@ -9,7 +9,9 @@ function AppContent() {
   const dispatch = useDispatch();
 
   //destructure
-  const { isFormOpen } = useSelector((state) => state.invoices);
+  const { isFormOpen, selectedInvoice } = useSelector(
+    (state) => state.invoices
+  );
   //console.log(isFormOpen);
 
   const handleNewInvoice = () => {
@@ -21,11 +23,13 @@ function AppContent() {
       <div className="max-w-5xl mx-auto px-4 py-12">
         <Header onNewInvoice={handleNewInvoice} />
 
-        <InvoiceDetails />
+        {selectedInvoice ? (
+          <InvoiceDetails invoice={selectedInvoice} />
+        ) : (
+          <InvoiceList />
+        )}
 
-        {/*  <InvoiceList />
-
-        {isFormOpen && <InvoiceForm />} */}
+        {isFormOpen && <InvoiceForm />}
       </div>
     </div>
   );

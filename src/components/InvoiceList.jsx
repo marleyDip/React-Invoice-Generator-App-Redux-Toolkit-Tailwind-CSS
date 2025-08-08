@@ -1,8 +1,10 @@
 import { format, parseISO } from "date-fns";
 import { ChevronRight } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedInvoice } from "../store/invoiceSlice";
 
 function InvoiceList() {
+  const dispatch = useDispatch();
   const { invoices, filter } = useSelector((state) => state.invoices);
   //console.log(invoices);
 
@@ -27,12 +29,16 @@ function InvoiceList() {
     }
   };
 
+  const handleClickSelectedInvoice = (invoice) => {
+    dispatch(setSelectedInvoice(invoice));
+  };
   return (
     <div className="space-y-4">
       {filteredInvoices.map((invoice) => (
         <div
           key={invoice.id}
-          className="bg-slate-800 rounded-lg p-3 sm:p-6 flex flex-col items-center justify-center sm:flex-row sm:items-center sm:justify-between gap-3 hover:bg-slate-700 cursor-pointer transition-colors duration-200"
+          className="bg-slate-800 rounded-lg p-3 sm:p-6 flex flex-col items-center justify-center sm:flex-row sm:items-center sm:justify-between gap-3 hover:bg-slate-700 cursor-pointer transition-colors duration-200 group"
+          onClick={() => handleClickSelectedInvoice(invoice)}
         >
           {/* Left section */}
           <div className="flex items-center space-x-3 sm:space-x-6 text-slate-400">
@@ -48,7 +54,7 @@ function InvoiceList() {
           </div>
 
           {/* Right section */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-6 group">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-6">
             <span className="text-base sm:text-xl md:text-2xl font-medium md:font-bold">
               ৳ {invoice.amount?.toFixed(2) || "0.00"}
             </span>
@@ -79,7 +85,7 @@ function InvoiceList() {
 
             <ChevronRight
               size={20}
-              className="text-violet-500 font-bold transform group-hover:translate-x-1 md:group-hover:translate-x-2 transition-transform duration-200"
+              className="text-violet-500 font-bold transform group-hover:scale-105 group-hover:translate-x-1 md:group-hover:translate-x-2 transition-transform duration-200"
             />
           </div>
         </div>
