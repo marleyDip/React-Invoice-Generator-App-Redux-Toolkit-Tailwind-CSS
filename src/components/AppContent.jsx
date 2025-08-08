@@ -9,6 +9,7 @@ function AppContent() {
 
   //destructure
   const { isFormOpen } = useSelector((state) => state.invoices);
+  //console.log(isFormOpen);
 
   const handleNewInvoice = () => {
     dispatch(toggleForm());
