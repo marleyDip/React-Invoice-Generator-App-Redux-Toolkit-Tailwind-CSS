@@ -1,15 +1,19 @@
 import { Plus, Trash2, X } from "lucide-react";
-
-import { useDispatch } from "react-redux";
-import { addInvoices, toggleForm } from "../store/invoiceSlice";
-import { useState } from "react";
-
 import { addDays, format } from "date-fns";
 
-function InvoiceForm() {
+import { useEffect, useState } from "react";
+
+import { useDispatch } from "react-redux";
+import { addInvoices, toggleForm, updateInvoice } from "../store/invoiceSlice";
+
+function InvoiceForm({ invoice }) {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState(() => {
+    if (invoice) {
+      return { ...invoice };
+    }
+
     return {
       id: `INV${Math.floor(Math.random() * 10000)
         .toString()
@@ -38,16 +42,27 @@ function InvoiceForm() {
       dueDate: format(addDays(new Date(), 30), "yyyy-MM-dd"),
     };
   });
-
   //console.log(formData);
+
+  useEffect(() => {
+    if (invoice) {
+      setFormData(invoice);
+    }
+  }, [invoice]);
 
   //handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     //console.log("working");
 
-    dispatch(addInvoices(formData));
-    console.log(formData);
+    //dispatch(addInvoices(formData));
+    //console.log(formData);
+
+    if (invoice) {
+      dispatch(updateInvoice(formData));
+    } else {
+      dispatch(addInvoices(formData));
+    }
   };
 
   const addItem = () => {
@@ -396,6 +411,7 @@ function InvoiceForm() {
             <button
               type="button"
               className="rounded-full px-6 py-3 text-white bg-gradient-to-br from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 transform hover:-translate-x-2 transition-all duration-200"
+              onClick={() => dispatch(toggleForm())}
             >
               Cancel
             </button>
@@ -404,7 +420,7 @@ function InvoiceForm() {
               type="submit"
               className="rounded-full px-6 py-3 text-white bg-gradient-to-br from-indigo-500 to-purple-700 hover:from-indigo-600 hover:to-purple-800 transform hover:translate-x-2 transition-all duration-200"
             >
-              Create Invoice
+              {invoice ? "Save Invoice" : "Create Invoice"}
             </button>
           </div>
           {/* btn */}

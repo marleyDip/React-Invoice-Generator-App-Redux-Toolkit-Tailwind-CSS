@@ -5,6 +5,7 @@ import {
   deleteInvoice,
   marksPaid,
   setSelectedInvoice,
+  toggleForm,
 } from "../store/invoiceSlice";
 
 function InvoiceDetails({ invoice }) {
@@ -14,6 +15,10 @@ function InvoiceDetails({ invoice }) {
 
   const handleMarksPaid = () => {
     dispatch(marksPaid(invoice.id));
+  };
+
+  const handleEdit = () => {
+    dispatch(toggleForm());
   };
 
   const handleDeleteInvoice = () => {
@@ -62,7 +67,10 @@ function InvoiceDetails({ invoice }) {
         </div>
 
         <div className="flex items-center justify-evenly w-full md:justify-end  md:space-x-4">
-          <button className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-slate-600 to-slate-800 hover:from-slate-500 hover:to-slate-700 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out">
+          <button
+            className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-slate-600 to-slate-800 hover:from-slate-500 hover:to-slate-700 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out"
+            onClick={handleEdit}
+          >
             Edit
           </button>
 

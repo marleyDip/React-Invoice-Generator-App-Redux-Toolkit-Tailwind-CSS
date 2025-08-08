@@ -29,7 +29,7 @@ function AppContent() {
           <InvoiceList />
         )}
 
-        {isFormOpen && <InvoiceForm />}
+        {isFormOpen && <InvoiceForm invoice={selectedInvoice} />}
       </div>
     </div>
   );

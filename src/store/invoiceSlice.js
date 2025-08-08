@@ -98,6 +98,24 @@ const invoiceSlice = createSlice({
       state.selectedInvoice = null;
       saveState(state);
     },
+
+    updateInvoice: (state, action) => {
+      const updateInvoice = {
+        ...action.payload,
+        amount: calculateAmount(action.payload.items),
+      };
+
+      const index = state.invoices.findIndex(
+        (inv) => inv.id === updateInvoice.id
+      );
+
+      if (index !== -1) {
+        state.invoices[index] = updateInvoice;
+      }
+      state.selectedInvoice = null;
+      state.isFormOpen = false;
+      saveState(state);
+    },
   },
 });
 
@@ -108,5 +126,6 @@ export const {
   setSelectedInvoice,
   marksPaid,
   deleteInvoice,
+  updateInvoice,
 } = invoiceSlice.actions;
 export default invoiceSlice.reducer;
