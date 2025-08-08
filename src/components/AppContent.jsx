@@ -3,6 +3,7 @@ import Header from "./Header";
 import InvoiceForm from "./InvoiceForm";
 import InvoiceList from "./InvoiceList";
 import { toggleForm } from "../store/invoiceSlice";
+import InvoiceDetails from "./InvoiceDetails";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -20,9 +21,11 @@ function AppContent() {
       <div className="max-w-5xl mx-auto px-4 py-12">
         <Header onNewInvoice={handleNewInvoice} />
 
-        <InvoiceList />
+        <InvoiceDetails />
 
-        {isFormOpen && <InvoiceForm />}
+        {/*  <InvoiceList />
+
+        {isFormOpen && <InvoiceForm />} */}
       </div>
     </div>
   );
