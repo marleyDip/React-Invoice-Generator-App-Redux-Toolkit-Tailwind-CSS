@@ -3,8 +3,21 @@ import { ChevronRight } from "lucide-react";
 import { useSelector } from "react-redux";
 
 function InvoiceList() {
-  const { invoices } = useSelector((state) => state.invoices);
+  const { invoices, filter } = useSelector((state) => state.invoices);
   //console.log(invoices);
+
+  const filteredInvoices = invoices.filter((invoice) => {
+    if (filter === "all") return true;
+    return invoice.status === filter;
+  });
+
+  if (filteredInvoices.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <div className="text-xl text-slate-400">No Invoice Found</div>
+      </div>
+    );
+  }
 
   const formatDate = (date) => {
     try {
@@ -16,7 +29,7 @@ function InvoiceList() {
 
   return (
     <div className="space-y-4">
-      {invoices.map((invoice) => (
+      {filteredInvoices.map((invoice) => (
         <div
           key={invoice.id}
           className="bg-slate-800 rounded-lg p-3 sm:p-6 flex flex-col items-center justify-center sm:flex-row sm:items-center sm:justify-between gap-3 hover:bg-slate-700 cursor-pointer transition-colors duration-200"

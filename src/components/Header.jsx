@@ -1,10 +1,13 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Filter, Plus } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilter } from "../store/invoiceSlice";
 
 const status = ["all", "paid", "pending", "draft"];
 
 function Header({ onNewInvoice }) {
+  const dispatch = useDispatch();
+
   const { invoices, filter } = useSelector((state) => state.invoices);
 
   return (
@@ -41,6 +44,7 @@ function Header({ onNewInvoice }) {
                     } w-full text-left px-4 py-2 rounded-lg capitalize ${
                       filter === s ? "text-violet-500" : "text-white"
                     }`}
+                    onClick={() => dispatch(setFilter(s))}
                   >
                     {s}
                   </button>
