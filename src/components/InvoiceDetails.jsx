@@ -1,7 +1,16 @@
+import { format, parseISO } from "date-fns";
 import React from "react";
 
 function InvoiceDetails({ invoice }) {
   console.log(invoice);
+
+  const formatDate = (dateString) => {
+    try {
+      return format(parseISO(dateString), "dd MMM yyyy");
+    } catch (err) {
+      return "Invalid Date";
+    }
+  };
 
   return (
     <div className="bg-slate-800 rounded-lg p-4 sm:p-8">
@@ -35,7 +44,7 @@ function InvoiceDetails({ invoice }) {
           </div>
         </div>
 
-        <div className="flex items-center justify-evenly w-full md:justify-center  md:space-x-4">
+        <div className="flex items-center justify-evenly w-full md:justify-end  md:space-x-4">
           <button className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-slate-600 to-slate-800 hover:from-slate-500 hover:to-slate-700 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out">
             Edit
           </button>
@@ -54,7 +63,7 @@ function InvoiceDetails({ invoice }) {
       {/* invoice details */}
       <div className="bg-slate-900 rounded-lg p-8">
         {/* bill form */}
-        <div className="flex justify-between mb-4 sm:mb-8">
+        <div className="flex justify-between mb-8">
           <div>
             <h2 className="sm:text-xl font-bold mb-2">{invoice.id}</h2>
 
@@ -63,11 +72,9 @@ function InvoiceDetails({ invoice }) {
             </p>
           </div>
 
-          <div className="text-right text-slate-400 text-sm sm:text-lg">
-            <p>{invoice.streetAddress}</p>
-            <p>{invoice.city}</p>
-            <p>{invoice.postCode}</p>
-            <p>{invoice.country}</p>
+          <div className="text-right text-slate-400 text-sm sm:text-lg space-x-2 sm:space-x-4">
+            <p>{invoice.billForm.streetAddress}</p>
+            <p>{`${invoice.billForm.city}, ${invoice.billForm.postCode}, ${invoice.billForm.country}`}</p>
           </div>
         </div>
         {/* bill form */}
@@ -79,33 +86,41 @@ function InvoiceDetails({ invoice }) {
               Invoice Date
             </p>
             <p className="text-sm font-medium sm:text-lg sm:font-bold mb-2">
-              {invoice.invoiceDate}
+              {formatDate(invoice.invoiceDate)}
             </p>
 
             <p className="text-xs sm:text-base text-slate-400 sm:mb-1">
               Payment Due
             </p>
             <p className="text-sm font-medium sm:text-base sm:font-bold">
-              {invoice.dueDate}
+              {formatDate(invoice.dueDate)}
             </p>
           </div>
 
-          <div className="text-sm sm:text-lg transform -translate-x-1/4 sm:-translate-x-0 transition-transform">
-            <p className="text-slate-400 font-bold mb-1 sm:mb-2">Bill To</p>
-            <p className="text-slate-400 mb-1 sm:mb-2">{invoice.clientName}</p>
-            <p className="text-slate-400">{invoice.streetAddress}</p>
+          <div className="text-sm sm:text-lg">
+            <p className="text-slate-400 font-semibold mb-1 sm:mb-2">Bill To</p>
+            <p className="text-slate-400 font-bold mb-1 sm:mb-2">
+              {invoice.clientName}
+            </p>
+            <p className="text-slate-400">{invoice.billTo.streetAddress}</p>
 
-            <div className="flex items-center space-x-1 sm:space-x-3">
-              <p className="text-slate-400">{invoice.city}</p>
-              <p className="text-slate-400">{invoice.postCode}</p>
-              <p className="text-slate-400">{invoice.country}</p>
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <p className="text-slate-400">
+                {[
+                  invoice.billTo.city,
+                  invoice.billTo.postCode,
+                  invoice.billTo.country,
+                ]
+                  .filter(Boolean)
+                  .join(", ")}
+              </p>
             </div>
           </div>
 
           <div>
-            <p className="text-slate-400 mb-1 sm:mb-2 font-bold">Sent To</p>
+            <p className="text-slate-400 mb-1 sm:mb-2 font-semibold">Sent To</p>
             <p className="text-base font-semibold sm:text-xl sm:font-bold">
-              {invoice.clientEmail}
+              {invoice.billTo.clientEmail}
             </p>
           </div>
         </div>
@@ -125,12 +140,14 @@ function InvoiceDetails({ invoice }) {
               </thead>
 
               <tbody>
-                <tr className="text-white">
-                  <td className="text-left"></td>
-                  <td className="text-center"></td>
-                  <td className="text-right"></td>
-                  <td className="text-right"></td>
-                </tr>
+                {invoice.items.map((item, index) => (
+                  <tr className="text-white" key={index}>
+                    <td className="text-left">{item.name}</td>
+                    <td className="text-center">{item.quantity}</td>
+                    <td className="text-right">{item.price}</td>
+                    <td className="text-right">{item.total}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
