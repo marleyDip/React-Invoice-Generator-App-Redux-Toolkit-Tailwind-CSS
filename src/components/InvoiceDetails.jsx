@@ -1,8 +1,16 @@
 import { format, parseISO } from "date-fns";
-import React from "react";
+
+import { useDispatch } from "react-redux";
+import { marksPaid } from "../store/invoiceSlice";
 
 function InvoiceDetails({ invoice }) {
-  console.log(invoice);
+  //console.log(invoice);
+
+  const dispatch = useDispatch();
+
+  const handleMarksPaid = () => {
+    dispatch(marksPaid(invoice.id));
+  };
 
   const formatDate = (dateString) => {
     try {
@@ -53,7 +61,10 @@ function InvoiceDetails({ invoice }) {
             Delete
           </button>
 
-          <button className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-violet-500 to-purple-700 hover:from-violet-400 hover:to-purple-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out">
+          <button
+            className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-violet-500 to-purple-700 hover:from-violet-400 hover:to-purple-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out"
+            onClick={handleMarksPaid}
+          >
             Mark as Paid
           </button>
         </div>
