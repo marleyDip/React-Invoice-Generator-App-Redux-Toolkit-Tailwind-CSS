@@ -1,20 +1,46 @@
 import React from "react";
 
-function InvoiceDetails() {
+function InvoiceDetails({ invoice }) {
+  console.log(invoice);
+
   return (
     <div className="bg-slate-800 rounded-lg p-4 sm:p-8">
       {/* status & btn */}
-      <div className="flex justify-between items-center mb-4 sm:mb-8">
-        <div className="flex items-center space-x-4">
-          <span className="sm:text-xl">Status</span>
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 md:gap-0 mb-4 sm:mb-8">
+        <div className="flex items-center justify-center w-full md:justify-start space-x-4">
+          <span className="sm:text-xl capitalize">status</span>
+
+          <div
+            className={`px-2 py-1 sm:px-4 sm:py-2 rounded-lg flex items-center space-x-2 ${
+              invoice.status === "paid"
+                ? "bg-green-900/20 text-green-500"
+                : invoice.status === "pending"
+                ? "bg-orange-900/20 text-orange-500"
+                : "bg-slate-700/50 text-slate-400"
+            }`}
+          >
+            <div
+              className={`w-2 h-2 rounded-full ${
+                invoice.status === "paid"
+                  ? "bg-green-500"
+                  : invoice.status === "pending"
+                  ? "bg-orange-500"
+                  : "bg-slate-400"
+              }`}
+            ></div>
+
+            <span className="capitalize font-semibold text-base sm:text-lg ">
+              {invoice.status}
+            </span>
+          </div>
         </div>
 
-        <div className="flex flex-nowrap space-x-2 sm:flex-row sm:space-x-4">
+        <div className="flex items-center justify-evenly w-full md:justify-center  md:space-x-4">
           <button className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-slate-600 to-slate-800 hover:from-slate-500 hover:to-slate-700 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out">
             Edit
           </button>
 
-          <button className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5transition-all duration-300 ease-out">
+          <button className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out">
             Delete
           </button>
 
@@ -30,16 +56,18 @@ function InvoiceDetails() {
         {/* bill form */}
         <div className="flex justify-between mb-4 sm:mb-8">
           <div>
-            <h2 className="sm:text-xl font-bold mb-2">id</h2>
+            <h2 className="sm:text-xl font-bold mb-2">{invoice.id}</h2>
 
-            <p className="text-slate-400 sm:text-lg">projectDescription</p>
+            <p className="text-slate-400 sm:text-lg">
+              {invoice.projectDescription}
+            </p>
           </div>
 
           <div className="text-right text-slate-400 text-sm sm:text-lg">
-            <p>streetAddress</p>
-            <p>city</p>
-            <p>postCode</p>
-            <p>country</p>
+            <p>{invoice.streetAddress}</p>
+            <p>{invoice.city}</p>
+            <p>{invoice.postCode}</p>
+            <p>{invoice.country}</p>
           </div>
         </div>
         {/* bill form */}
@@ -51,33 +79,33 @@ function InvoiceDetails() {
               Invoice Date
             </p>
             <p className="text-sm font-medium sm:text-lg sm:font-bold mb-2">
-              invoiceDate
+              {invoice.invoiceDate}
             </p>
 
             <p className="text-xs sm:text-base text-slate-400 sm:mb-1">
               Payment Due
             </p>
             <p className="text-sm font-medium sm:text-base sm:font-bold">
-              dueDate
+              {invoice.dueDate}
             </p>
           </div>
 
           <div className="text-sm sm:text-lg transform -translate-x-1/4 sm:-translate-x-0 transition-transform">
             <p className="text-slate-400 font-bold mb-1 sm:mb-2">Bill To</p>
-            <p className="text-slate-400 mb-1 sm:mb-2">clientName</p>
-            <p className="text-slate-400">streetAddress</p>
+            <p className="text-slate-400 mb-1 sm:mb-2">{invoice.clientName}</p>
+            <p className="text-slate-400">{invoice.streetAddress}</p>
 
             <div className="flex items-center space-x-1 sm:space-x-3">
-              <p className="text-slate-400">city</p>
-              <p className="text-slate-400">postCode</p>
-              <p className="text-slate-400">country</p>
+              <p className="text-slate-400">{invoice.city}</p>
+              <p className="text-slate-400">{invoice.postCode}</p>
+              <p className="text-slate-400">{invoice.country}</p>
             </div>
           </div>
 
           <div>
             <p className="text-slate-400 mb-1 sm:mb-2 font-bold">Sent To</p>
             <p className="text-base font-semibold sm:text-xl sm:font-bold">
-              clientEmail
+              {invoice.clientEmail}
             </p>
           </div>
         </div>
@@ -98,22 +126,22 @@ function InvoiceDetails() {
 
               <tbody>
                 <tr className="text-white">
-                  <td className="text-left">Item Name</td>
-                  <td className="text-center">Qty</td>
-                  <td className="text-right">Price</td>
-                  <td className="text-right">Total</td>
+                  <td className="text-left"></td>
+                  <td className="text-center"></td>
+                  <td className="text-right"></td>
+                  <td className="text-right"></td>
                 </tr>
               </tbody>
             </table>
           </div>
 
           <div className="bg-slate-900 p-4 sm:p-8 flex items-center justify-between">
-            <span className="text-white text-base sm:text-xl font-medium sm:font-semibold">
+            <span className="text-white text-sm sm:text-xl font-medium sm:font-semibold">
               Amount Due
             </span>
 
-            <span className="text-2xl sm:text-3xl font-semibold sm:font-bold">
-              ৳ amount
+            <span className="text-xl sm:text-3xl font-semibold sm:font-bold">
+              ৳ {invoice.amount.toFixed(2)}
             </span>
           </div>
         </div>
