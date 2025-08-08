@@ -1,7 +1,11 @@
 import { format, parseISO } from "date-fns";
 
 import { useDispatch } from "react-redux";
-import { marksPaid } from "../store/invoiceSlice";
+import {
+  deleteInvoice,
+  marksPaid,
+  setSelectedInvoice,
+} from "../store/invoiceSlice";
 
 function InvoiceDetails({ invoice }) {
   //console.log(invoice);
@@ -10,6 +14,11 @@ function InvoiceDetails({ invoice }) {
 
   const handleMarksPaid = () => {
     dispatch(marksPaid(invoice.id));
+  };
+
+  const handleDeleteInvoice = () => {
+    dispatch(deleteInvoice(invoice.id));
+    dispatch(setSelectedInvoice(null));
   };
 
   const formatDate = (dateString) => {
@@ -57,7 +66,10 @@ function InvoiceDetails({ invoice }) {
             Edit
           </button>
 
-          <button className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out">
+          <button
+            className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out"
+            onClick={handleDeleteInvoice}
+          >
             Delete
           </button>
 

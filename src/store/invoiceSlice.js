@@ -91,7 +91,13 @@ const invoiceSlice = createSlice({
       }
     },
 
-    
+    deleteInvoice: (state, action) => {
+      state.invoices = state.invoices.filter(
+        (inv) => inv.id !== action.payload
+      );
+      state.selectedInvoice = null;
+      saveState(state);
+    },
   },
 });
 
@@ -101,5 +107,6 @@ export const {
   setFilter,
   setSelectedInvoice,
   marksPaid,
+  deleteInvoice,
 } = invoiceSlice.actions;
 export default invoiceSlice.reducer;
