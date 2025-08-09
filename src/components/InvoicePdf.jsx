@@ -1,4 +1,11 @@
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Link,
+} from "@react-pdf/renderer";
 import { format } from "date-fns";
 
 //create style
@@ -98,9 +105,9 @@ const styles = StyleSheet.create({
     color: "#1e1e1e",
   },
   col1: { width: "40%" },
-  col2: { width: "40%", textAlign: "center" },
-  col3: { width: "40%", textAlign: "right" },
-  col4: { width: "40%", textAlign: "right" },
+  col2: { width: "20%", textAlign: "center" },
+  col3: { width: "20%", textAlign: "right" },
+  col4: { width: "20%", textAlign: "right" },
   totalSection: {
     marginTop: 30,
     backgroundColor: "#1e1e1e",
@@ -113,12 +120,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   totalLabel: {
-    fontFamily: 14,
+    fontSize: 14,
     color: "#ffffff",
     opacity: 0.7,
   },
   totalAmount: {
-    fontFamily: 14,
+    fontSize: 14,
     fontWeight: "bold",
     color: "#ffffff",
   },
@@ -129,7 +136,7 @@ const styles = StyleSheet.create({
     right: 50,
     textAlign: "center",
     color: "#6b7280",
-    fontSize: 10,
+    fontSize: 12,
     paddingTop: 20,
     borderTopWidth: 1,
     borderTopColor: "#e5e7eb",
@@ -160,7 +167,7 @@ export const InvoicePdf = ({ invoice }) => {
           </View>
 
           <View style={styles.headerRight}>
-            <Text style={[styles.status, getStatusStyle(invoice.style)]}>
+            <Text style={[styles.status, getStatusStyle(invoice.status)]}>
               {invoice.status}
             </Text>
           </View>
@@ -254,11 +261,11 @@ export const InvoicePdf = ({ invoice }) => {
               </Text>
 
               <Text style={[styles.tableCell, styles.col3]}>
-                ৳ {invoice.price.toFixed(2)}
+                {item.price.toFixed(2)}
               </Text>
 
               <Text style={[styles.tableCell, styles.col4]}>
-                ৳ {invoice.total.toFixed(2)}
+                {item.total.toFixed(2)}
               </Text>
             </View>
           ))}
@@ -270,7 +277,9 @@ export const InvoicePdf = ({ invoice }) => {
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Amount Due</Text>
 
-            <Text style={styles.totalAmount}>৳{invoice.amount.toFixed(2)}</Text>
+            <Text style={styles.totalAmount}>
+              BDT {invoice.amount.toFixed(2)}
+            </Text>
           </View>
         </View>
         {/* total */}
@@ -278,12 +287,21 @@ export const InvoicePdf = ({ invoice }) => {
         {/* footer */}
         <Text style={styles.footer}>
           This is a computer-generated document. No signature is required.
-          Copyright By {new Date().getFullYear()}
-          <a href="https://marleydip.netlify.app/" target="_blank">
-            Md Sofian Hasan
-          </a>
-          . All Right Reserved
+          {/* clickable link below footer */}
+          <View style={{ textAlign: "center" }}>
+            <Text> All Right Reserved By - </Text>
+            <Link
+              src="https://marleydip.netlify.app/"
+              style={{
+                color: "blue",
+                textDecoration: "underline",
+              }}
+            >
+              Md Sofian Hasan
+            </Link>
+          </View>
         </Text>
+
         {/* footer */}
       </Page>
     </Document>

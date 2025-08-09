@@ -1,4 +1,5 @@
 import { format, parseISO } from "date-fns";
+import { CalendarCheck, Delete, Download, PencilRuler } from "lucide-react";
 
 import { useDispatch } from "react-redux";
 import {
@@ -7,6 +8,9 @@ import {
   setSelectedInvoice,
   toggleForm,
 } from "../store/invoiceSlice";
+
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { InvoicePdf } from "./InvoicePdf";
 
 function InvoiceDetails({ invoice }) {
   //console.log(invoice);
@@ -66,26 +70,49 @@ function InvoiceDetails({ invoice }) {
           </div>
         </div>
 
-        <div className="flex items-center justify-evenly w-full md:justify-end  md:space-x-4">
+        <div className="flex items-center justify-evenly w-full md:justify-end md:space-x-4">
+          <PDFDownloadLink
+            document={<InvoicePdf invoice={invoice} />}
+            fileName={`invoice-${invoice.id}.pdf`}
+            className="px-3 py-1.5 sm:px-4 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-cyan-500 to-blue-700 hover:from-cyan-400 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out"
+          >
+            {/* {({ loading }) => (
+              <>
+                <Download size={20} className="" />
+                <span>{loading ? "Loading..." : "PDF"}</span>
+              </>
+            )} */}
+
+            <span className="flex">
+              <Download size={20} className="mr-1 sm:mr-2" /> PDF
+            </span>
+          </PDFDownloadLink>
+
           <button
-            className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-slate-600 to-slate-800 hover:from-slate-500 hover:to-slate-700 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out"
+            className="px-3 py-1.5 sm:px-4 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-slate-600 to-slate-800 hover:from-slate-500 hover:to-slate-700 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out"
             onClick={handleEdit}
           >
-            Edit
+            <span className="flex">
+              <PencilRuler size={20} className="mr-1 sm:mr-2" /> Edit
+            </span>
           </button>
 
           <button
-            className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out"
+            className="px-3 py-1.5 sm:px-4 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out"
             onClick={handleDeleteInvoice}
           >
-            Delete
+            <span className="flex">
+              <Delete size={20} className="mr-1 sm:mr-2" /> Delete
+            </span>
           </button>
 
           <button
-            className="px-3 py-1.5 sm:px-6 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-violet-500 to-purple-700 hover:from-violet-400 hover:to-purple-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out"
+            className="px-3 py-1.5 sm:px-4 sm:py-3 rounded-full text-white font-semibold bg-gradient-to-r from-violet-500 to-purple-700 hover:from-violet-400 hover:to-purple-600 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 ease-out"
             onClick={handleMarksPaid}
           >
-            Mark as Paid
+            <span className="flex">
+              <CalendarCheck size={20} className="mr-1 sm:mr-2" /> Paid
+            </span>
           </button>
         </div>
       </div>
