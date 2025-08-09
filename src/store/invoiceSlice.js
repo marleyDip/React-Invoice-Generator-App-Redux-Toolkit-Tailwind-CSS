@@ -100,15 +100,18 @@ const invoiceSlice = createSlice({
     },
 
     updateInvoice: (state, action) => {
+      //Takes everything from action.payload (the new invoice data passed in when dispatching the action).
       const updateInvoice = {
         ...action.payload,
         amount: calculateAmount(action.payload.items),
       };
 
+      //Searches state.invoices for the invoice with the same id as updateInvoice.
       const index = state.invoices.findIndex(
         (inv) => inv.id === updateInvoice.id
       );
 
+      //If the invoice exists (index is not -1), it replaces the old invoice object with the updated one.
       if (index !== -1) {
         state.invoices[index] = updateInvoice;
       }

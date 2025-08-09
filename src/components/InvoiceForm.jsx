@@ -9,7 +9,11 @@ import { addInvoices, toggleForm, updateInvoice } from "../store/invoiceSlice";
 function InvoiceForm({ invoice }) {
   const dispatch = useDispatch();
 
+  // This is called lazy initialization — (pass a function instead of value) -- it’s useful when calculating the initial value might be a bit “expensive” or dependent on some props.
+
   const [formData, setFormData] = useState(() => {
+    // “When the component first loads, if I have an invoice, start my formData as a copy of that invoice.
+    // Otherwise, start with an empty object.”
     if (invoice) {
       return { ...invoice };
     }
@@ -44,11 +48,46 @@ function InvoiceForm({ invoice }) {
   });
   //console.log(formData);
 
+  //It watches for changes to invoice and updates your form state accordingly, ensuring the form always reflects the latest invoice being edited.
+
+  /* 
+  [ Parent Component / Redux Store ]
+             |
+             v
+        invoice (prop)
+             |
+     useEffect watches invoice
+             |
+   if invoice changes → setFormData(invoice)
+             |
+             v
+   [ formData state inside component ]
+             |
+   shown in your form fields
+
+   How it works in time sequence
+   
+   1. Initial load
+   => Component mounts
+   => invoice has a value → setFormData(invoice) runs → form is filled.
+   
+   2. User selects another invoice
+   => invoice changes (new object).
+   => useEffect runs again.
+   => Copies new invoice data into formData.
+   
+   3. User edits form fields
+   => formData changes as they type (independent of invoice).
+   =>useEffect will not run unless invoice changes again.
+*/
   useEffect(() => {
     if (invoice) {
       setFormData(invoice);
     }
   }, [invoice]);
+  /* Why this is important:
+  Without this useEffect, if invoice changes in your parent/Redux, your form would still show old data — unless you refresh or manually reset it.
+ */
 
   //handle form submit
   const handleSubmit = (e) => {
